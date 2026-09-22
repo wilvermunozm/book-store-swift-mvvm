@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct BookStoreSwiftMVVMApp: App {
+    private let container = AppContainer()
+    
     var body: some Scene {
         WindowGroup {
-            HomeScreen()
+            HomeScreen(
+                viewModel: container.store.makeViewModel()
+            )
         }
     }
 }

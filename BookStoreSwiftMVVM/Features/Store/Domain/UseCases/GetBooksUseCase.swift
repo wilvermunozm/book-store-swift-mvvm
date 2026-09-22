@@ -12,7 +12,7 @@ struct GetBooksUseCase {
         self.repository = repository
     }
     
-    func getBooks() async throws -> [Book]{
+    func execute() async throws -> [Book]{
         try await  repository.getBooks()
     }
 }

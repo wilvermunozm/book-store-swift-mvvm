@@ -18,9 +18,8 @@ final class HomeViewModel {
     }
     
     func getBooks() async {
-        let service = RestService()
         do {
-            let bookList = try await service.get()
+            let bookList = try await getBooksUseCase.execute()
             
             state = if bookList.isEmpty {
                 .empty

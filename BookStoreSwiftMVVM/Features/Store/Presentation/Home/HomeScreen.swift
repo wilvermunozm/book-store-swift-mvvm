@@ -7,16 +7,9 @@
 import SwiftUI
 
 struct HomeScreen : View {
-    @State var viewModel = HomeViewModel(
-        getBooksUseCase:    GetBooksUseCase(
-            repository: BookRepository(
-                restService: RestService()
-            )
-        )
-    )
+    @State var viewModel : HomeViewModel
     
     var body: some View {
-        
         VStack {
             content
         }.task {
@@ -46,5 +39,6 @@ struct HomeScreen : View {
 }
 
 #Preview {
-    HomeScreen()
+    let container = AppContainer()
+    HomeScreen(viewModel: container.store.makeViewModel())
 }

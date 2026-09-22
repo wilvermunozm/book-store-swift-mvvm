@@ -13,6 +13,6 @@ struct DetailScreen : View {
     var body: some View {
         VStack{
             Text(book.authorName)
-        }.navigationTitle("Book details")
+        }.navigationTitle("Book \(book.id)")
     }
 }

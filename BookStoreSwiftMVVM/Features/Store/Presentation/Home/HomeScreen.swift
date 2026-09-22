@@ -7,27 +7,32 @@
 import SwiftUI
 
 struct HomeScreen : View {
-    @State var bookList : [Book] = []
+    @State var viewModel = HomeViewModel()
     
     var body: some View {
-        NavigationStack {
-            List(bookList){ book in
-                NavigationLink(value: book){
-                    Text(book.authorName)
+        
+        VStack {
+            switch viewModel.state {
+            case .loading : LoaderView()
+            case .error(let errorMessage): ErrorView(errorMenssage: errorMessage)
+            case .empty: EmptyStateView()
+            case .loaded(let bookList) :
+                NavigationStack {
+                    List(bookList){ book in
+                        NavigationLink(value: book){
+                            Text(book.authorName)
+                        }
+                    }.navigationDestination(for: Book.self){ book in
+                        DetailScreen(book: book)
+                    }
+                    .navigationTitle("Book Store")
                 }
-            }.navigationDestination(for: Book.self){ book in
-                DetailScreen(book: book)
             }
-            .navigationTitle("Book Store")
+        }.task {
+            await viewModel.getBooks()
         }
-        .task {
-            let service = RestService()
-            do {
-                bookList = try await service.get()
-            } catch {
-                print("Failed to load books: \(error)")
-            }
-        }
+        
+        
     }
 }
 

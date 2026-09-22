@@ -11,7 +11,7 @@ import SwiftUI
 struct BookStoreSwiftMVVMApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeScreen()
         }
     }
 }

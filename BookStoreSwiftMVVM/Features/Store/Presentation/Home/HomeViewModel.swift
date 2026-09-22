@@ -11,6 +11,11 @@ import Foundation
 @Observable
 final class HomeViewModel {
     private(set) var state : HomeState = .loading
+    private let getBooksUseCase : GetBooksUseCase
+    
+    init(getBooksUseCase: GetBooksUseCase) {
+        self.getBooksUseCase = getBooksUseCase
+    }
     
     func getBooks() async {
         let service = RestService()

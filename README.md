@@ -1,149 +1,172 @@
-# Book Store — Swift · MVVM · Clean Architecture
+# Book Store
 
-App iOS que lista libros de la API pública de [Open Library](https://openlibrary.org)
-y permite ver el detalle de cada uno.
+App iOS que lista libros desde [Open Library](https://openlibrary.org), permite
+marcarlos como favoritos y agregarlos a un carrito.
 
-## Requisitos previos
+## Requisitos
 
 - Xcode 27
-- CocoaPods 1.16+
+- Ruby 3.2.10 (fijado en `.ruby-version`)
 
-## Puesta en marcha
+CocoaPods y fastlane se instalan desde el `Gemfile` para que todos usen la misma
+versión.
+
+## Ejecutar
 
 ```bash
-pod install
+git clone https://github.com/wilvermunozm/book-store-swift-mvvm.git
+git checkout develop
+bundle install
+bundle exec pod install
 open BookStoreSwiftMVVM.xcworkspace
 ```
 
-> Abre siempre el **`.xcworkspace`**, no el `.xcodeproj`. El proyecto usa
-> CocoaPods y el `.xcodeproj` por sí solo no encuentra las dependencias.
+Abrir el `.xcworkspace`, no el `.xcodeproj`.
 
-## Arquitectura
 
-MVVM con principios de Clean Architecture. Las dependencias apuntan siempre
-hacia el dominio: `Presentation → Domain ← Data`.
+## Estructura
 
 ```
 BookStoreSwiftMVVM/
-├── App/                      Composition root (DI)
-│   ├── AppContainer.swift
-│   └── FeatureContainers/
-├── Core/
-│   ├── DesignSytem/          Componentes de UI reutilizables
-│   └── Resource/
+├── App/                    Composition root (DI)
+├── Core/DesignSytem/       Componentes de UI reutilizables
 └── Features/Store/
-    ├── Domain/               Entidades, protocolos de repositorio, casos de uso
-    ├── Data/                 DTOs e implementación de repositorios
-    └── Presentation/         Vistas y ViewModels
+    ├── Domain/             Entities, RepositoryTypes, UseCases
+    ├── Data/               DTO, Persistence, Pricing, Repositories
+    └── Presentation/       Home, Detail, Favorites, Cart
 ```
 
-### Inyección de dependencias
 
-No se usa ninguna librería de DI. `AppContainer` es el único punto donde se
-nombran tipos concretos; el resto de la app depende de protocolos.
+## Clean Architecture
+
+La regla que se siguió es la de dependencias: las capas externas conocen a las
+internas, nunca al revés. Se puede verificar mirando los imports de cada capa.
+
+- Domain solo importa `Foundation`. No conoce SwiftUI, ni SwiftData, ni la red.
+- Data importa `SwiftData` y `BookStoreNetworking`, que son los detalles.
+- Presentation importa `SwiftUI` y `Observation`.
+
+La pieza que hace posible la inversión son los protocolos de repositorio
+(`BookRepositoryType`, `FavoritesRepositoryType`, `CartRepositoryType`), que
+viven en Domain y no en Data. El dominio declara lo que necesita y la capa de
+datos se adapta. Por eso cambiar SwiftData por otra cosa, o la API remota por
+otra, no obliga a tocar casos de uso ni ViewModels.
+
+Hay tres modelos distintos para el mismo concepto, con mapeo explícito entre
+ellos: `BookDTO` (respuesta de la API), `Book` (entidad de dominio) y
+`FavoriteBookEntity` (modelo de SwiftData). Cuesta un poco más de código, pero
+evita que un cambio en el JSON de Open Library se propague a la base de datos o
+a las vistas.
+
+Los casos de uso son la capa más discutible. De los siete que hay, solo
+`ToggleFavoriteUseCase` tiene lógica propia — consulta el estado actual y decide
+si agrega o quita. El resto delega en una línea al repositorio. Se mantuvieron
+por uniformidad y porque son el sitio natural donde crecería la lógica de
+negocio, pero hoy la mayoría no aporta nada por sí misma.
+
+## MVVM
+
+Cada pantalla tiene un ViewModel `@Observable` que expone estado de solo lectura
+(`private(set)`) y métodos para las acciones. La vista lee y llama; nunca
+escribe estado directamente. Eso lo garantiza el compilador, no la disciplina.
+
+El estado de carga es un `enum` con cuatro casos (`loading`, `loaded`, `empty`,
+`error`) en lugar de booleanos sueltos, así que no se pueden representar
+combinaciones contradictorias.
+
+Los errores de acciones puntuales van en una propiedad aparte (`actionError`) y
+se muestran como alerta. Al principio se usaba el mismo `state`, pero eso hacía
+que un fallo al agregar al carrito borrara toda la lista de libros de la
+pantalla.
+
+La única excepción a MVVM es `DetailScreen`, que no tiene ViewModel: recibe el
+libro, si es favorito y las acciones como closures. Se hizo así para no duplicar
+la fuente de verdad de los favoritos entre dos ViewModels.
+
+## Inyección de dependencias
+
+Sin librerías. `AppContainer` es el único lugar donde se nombran tipos
+concretos; el resto de la app depende de protocolos.
 
 ```
-AppContainer  →  StoreContainer  →  makeViewModel()
+AppContainer → StoreContainer → makeHomeViewModel()
+                                makeFavoritesViewModel()
+                                makeCartViewModel()
 ```
 
-Los ViewModels se inyectan por constructor, lo que permite sustituir el
-repositorio por un doble en tests y previews.
+Dentro de los containers la forma de declarar cada dependencia define su ciclo
+de vida: `private let` para lo que debe compartirse con estado (el
+`ModelContainer` de SwiftData, el repositorio del carrito), propiedades
+computadas para los casos de uso que no tienen estado, y funciones `make…()`
+para los ViewModels, que siempre se crean nuevos.
 
-### Estado de pantalla
+Los ViewModels se inyectan por constructor, sin valores por defecto. Eso obliga
+a que el cableado ocurra en un solo sitio y permite sustituir cualquier
+repositorio por un doble en tests.
 
-Cada pantalla expone un único `enum` de estado (`loading` / `loaded` / `empty`
-/ `error`) en lugar de varios booleanos sueltos, de modo que los estados
-contradictorios no son representables.
+## Decisiones puntuales
 
-## Dependencias
+**Persistencia.** Favoritos con SwiftData, detrás de su protocolo. Se guarda el
+libro completo y no solo el id para que la pantalla funcione sin conexión. No se
+usa `@Query` en las vistas a propósito: metería el modelo de persistencia dentro
+de la UI y dejaría sin sentido al ViewModel.
 
-| Dependencia | Uso |
-|---|---|
-| [Kingfisher](https://github.com/onevcat/Kingfisher) 8.x | Carga y caché de portadas |
-| `BookStoreNetworking` | XCFramework propio con la capa de red |
+**Carrito en memoria.** Según el enunciado, solo dura la sesión
+(`InMemoryCartRepository`). Como implementa el mismo protocolo, agregarle
+persistencia sería sustituir esa clase sin tocar nada más.
 
-Se integran con **CocoaPods**, según lo pedido en el enunciado. En un proyecto
-nuevo hoy usaría SPM: CocoaPods está en modo mantenimiento desde 2024 y SPM es
-la herramienta nativa.
+**Precios.** La API no devuelve precios. `BookPricing` genera uno determinista a
+partir de la clave del libro, para que el mismo libro cueste siempre lo mismo.
+Los montos usan `Decimal` y no `Double`, porque la aritmética binaria acumula
+error al sumar dinero.
 
-## XCFramework
+**XCFramework.** La capa de red está encapsulada en
+`BookStoreNetworking.xcframework`, distribuido con un podspec local. El cliente
+HTTP es genérico (`get<T: Decodable>`) y no conoce `Book` ni ningún DTO: el
+mapeo a dominio se queda en la app. Se regenera con
+`./scripts/build-xcframework.sh`.
 
-La capa de networking está encapsulada en `BookStoreNetworking.xcframework`,
-un binario universal (dispositivo + simulador) distribuido mediante un
-`podspec` local.
-
-El cliente HTTP es **genérico y agnóstico del dominio** — no conoce `Book` ni
-ningún DTO de la app:
-
-```swift
-public func get<T: Decodable>(_ url: URL) async throws -> T
-```
-
-El mapeo de JSON a entidades de dominio se queda en la capa `Data` de la app,
-que es donde corresponde.
-
-### Regenerar el binario
-
-```bash
-./scripts/build-xcframework.sh
-```
-
-El script archiva para ambas plataformas y las combina. Usa dos ajustes
-imprescindibles:
-
-- `BUILD_LIBRARY_FOR_DISTRIBUTION=YES` — genera el `.swiftinterface`, necesario
-  para la estabilidad de módulo.
-- `SKIP_INSTALL=NO` — sin esto el archive no incluye el framework y el paso de
-  combinación falla.
-
-El `.xcframework` se versiona en el repositorio para que el proyecto compile
-tras un `pod install`, sin tener que regenerarlo.
+**Dependencias con CocoaPods** según el enunciado. En un proyecto nuevo hoy
+usaría SPM, que es la herramienta nativa. Kingfisher se eligió por el prefetch y
+la consistencia del scroll en listas de imágenes.
 
 ## Tests
 
 ```bash
-xcodebuild test -workspace BookStoreSwiftMVVM.xcworkspace \
-  -scheme BookStoreSwiftMVVM \
-  -destination 'platform=iOS Simulator,name=iPhone 17'
+bundle exec fastlane tests             # app
+bundle exec fastlane framework_tests   # XCFramework
 ```
 
-| Suite | Cubre |
-|---|---|
-| `HomeViewModelTests` | Los cuatro estados de la pantalla principal |
-| `BooksResponseDTOTests` | Mapeo DTO → dominio, incluida la construcción de URLs de portada |
+- `HomeViewModelTests` — los cuatro estados de la pantalla principal.
+- `BooksResponseDTOTests` — mapeo DTO a dominio y construcción de URLs de portada.
+- `RestServiceTests` — cliente HTTP con `URLProtocol` simulado, sin red real.
 
-Los tests sustituyen el repositorio por un stub, de modo que el caso de uso y
-el ViewModel reales se ejecutan sin tocar la red. La suite completa corre en
-milisegundos.
+Los tests sustituyen los repositorios por dobles en memoria, así que los casos
+de uso y los ViewModels reales sí se ejecutan. La suite corre en milisegundos.
 
-### Tests del XCFramework
+Los resultados quedan en un `.xcresult` en `fastlane/test_output`, no en JUnit:
+`xcpretty` no sabe leer Swift Testing y genera un informe vacío.
 
-```bash
-xcodebuild test \
-  -project Frameworks/BookStoreNetworking/BookStoreNetworking.xcodeproj \
-  -scheme BookStoreNetworking \
-  -destination 'platform=iOS Simulator,name=iPhone 17'
-```
+## Automatización
 
-`RestServiceTests` cubre el cliente HTTP con un `URLProtocol` simulado: cuerpo
-decodificado correctamente, rangos de estado de éxito y de error, fallo de
-decodificación y errores de transporte. No se hace ninguna petición real.
+`bundle exec fastlane lanes` lista las disponibles: `tests`, `framework_tests`,
+`build_framework`, `build` y `ci` (pod install más ambas suites).
 
-Para permitirlo, `RestService` recibe la `URLSession` por constructor
-(`init(session: .shared)`), que es la costura por la que entra el mock.
+## Ajustes del proyecto
 
-## Ajustes del proyecto que requieren explicación
+Tres ajustes que no son arbitrarios:
 
-Ambos son consecuencia de usar CocoaPods con Xcode 27:
+- `ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES` — Xcode 26+ activa App Sandbox por
+  defecto y sin este permiso las conexiones salientes fallan con un error TLS.
+- `objectVersion = 77` — Xcode 27 guarda los proyectos en formato 110, que la
+  gema `xcodeproj` de CocoaPods todavía no soporta.
+- `ENABLE_USER_SCRIPT_SANDBOXING = NO` — bloquea el script con el que CocoaPods
+  copia los frameworks.
 
-- **`objectVersion = 77`** — Xcode 27 guarda los proyectos con formato `110`,
-  que la gema `xcodeproj` de CocoaPods todavía no soporta (llega hasta 100).
-  Se bajó el formato para poder integrar dependencias.
-- **`ENABLE_USER_SCRIPT_SANDBOXING = NO`** — el sandboxing de scripts de
-  Xcode 15+ bloquea el `rsync` con el que CocoaPods copia los frameworks.
+## Pendientes
 
-## Pendiente
-
-- Las portadas del detalle usan el tamaño `-M` de la API estirado a 180 pt, por
-  lo que se pixelan. La mejora sería modelar la portada con sus dos tamaños
-  (`thumbnail` y `large`) y pedir `-L` en el detalle.
+- Los ViewModels de cada pestaña consultan su repositorio por separado, así que
+  un cambio en una no refresca las otras hasta que se recargan. Se resolvería
+  con un observable compartido por encima de los repositorios.
+- La portada del detalle usa el tamaño `-M` de la API estirado a 180 pt y se
+  pixela. Habría que modelar la portada con sus dos tamaños.

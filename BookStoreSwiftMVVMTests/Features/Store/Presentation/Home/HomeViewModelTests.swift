@@ -6,6 +6,7 @@
 //
 
 import Testing
+import Foundation
 import BookStoreNetworking
 @testable import BookStoreSwiftMVVM
 
@@ -19,7 +20,8 @@ struct HomeViewModelTests {
                 repository: StubBookRepository(result: result)
             ),
             getFavoriteIdsUseCase: GetFavoriteIdsUseCase(repository: favorites),
-            toggleFavoriteUseCase: ToggleFavoriteUseCase(repository: favorites)
+            toggleFavoriteUseCase: ToggleFavoriteUseCase(repository: favorites),
+            addToCartUseCase: AddToCartUseCase(repository: StubCartRepository())
         )
     }
     
@@ -29,7 +31,7 @@ struct HomeViewModelTests {
     }
     
     @Test func showsBooksWhenRepositoryReturnsData() async {
-        let books = [Book(id: "/works/OL1W", title: "Ficciones", authorName: "Borges", coverURL: nil)]
+        let books = [Book(id: "/works/OL1W", title: "Ficciones", authorName: "Borges", coverURL: nil, price: 9.99)]
         let sut = makeVM(.success(books))
         await sut.getBooks()
         #expect(sut.state == .loaded(books))

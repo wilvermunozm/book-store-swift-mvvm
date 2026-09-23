@@ -38,7 +38,8 @@ extension BooksResponseDTO {
                 id: $0.key,
                 title: $0.title,
                 authorName: $0.author_name?.first ?? "",
-                coverURL: $0.coverURL()
+                coverURL: $0.coverURL(),
+                price: BookPricing.price(for: $0.key)
             )
         }
     }

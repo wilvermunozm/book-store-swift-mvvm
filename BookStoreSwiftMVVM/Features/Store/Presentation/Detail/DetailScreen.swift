@@ -11,6 +11,9 @@ struct DetailScreen : View {
     let book : Book
     let isFavorite : Bool
     let onToggleFavorite : () async -> Void
+    let onAddToCart : (() async -> Void)?
+
+    @State private var didAddToCart = false
 
     var body: some View {
         ScrollView {
@@ -26,6 +29,14 @@ struct DetailScreen : View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
+
+                Text(book.price, format: .currency(code: "USD"))
+                    .font(.title3.weight(.semibold))
+                    .monospacedDigit()
+
+                if onAddToCart != nil {
+                    addToCartButton
+                }
             }.padding()
         }.navigationTitle(book.title)
             .navigationBarTitleDisplayMode(.inline)
@@ -36,5 +47,31 @@ struct DetailScreen : View {
                     }
                 }
             }
+    }
+
+    private var addToCartButton : some View {
+        Button {
+            Task { await addToCart() }
+        } label: {
+            Label(
+                didAddToCart ? "Agregado al carrito" : "Agregar al carrito",
+                systemImage: didAddToCart ? "checkmark.circle.fill" : "cart.badge.plus"
+            )
+            .frame(maxWidth: .infinity)
+            .contentTransition(.symbolEffect(.replace))
+        }
+        .buttonStyle(.borderedProminent)
+        .controlSize(.large)
+        .tint(didAddToCart ? .green : .accentColor)
+        .disabled(didAddToCart)
+        .sensoryFeedback(.success, trigger: didAddToCart)
+    }
+
+    private func addToCart() async {
+        await onAddToCart?()
+
+        withAnimation { didAddToCart = true }
+        try? await Task.sleep(for: .seconds(1.2))
+        withAnimation { didAddToCart = false }
     }
 }

@@ -16,15 +16,18 @@ final class HomeViewModel {
     private let getBooksUseCase : GetBooksUseCase
     private let getFavoriteIdsUseCase : GetFavoriteIdsUseCase
     private let toggleFavoriteUseCase : ToggleFavoriteUseCase
+    private let addToCartUseCase : AddToCartUseCase
 
     init(
         getBooksUseCase: GetBooksUseCase,
         getFavoriteIdsUseCase: GetFavoriteIdsUseCase,
-        toggleFavoriteUseCase: ToggleFavoriteUseCase
+        toggleFavoriteUseCase: ToggleFavoriteUseCase,
+        addToCartUseCase: AddToCartUseCase
     ) {
         self.getBooksUseCase = getBooksUseCase
         self.getFavoriteIdsUseCase = getFavoriteIdsUseCase
         self.toggleFavoriteUseCase = toggleFavoriteUseCase
+        self.addToCartUseCase = addToCartUseCase
     }
 
     func getBooks() async {
@@ -56,7 +59,14 @@ final class HomeViewModel {
         }
     }
 
-    
+    func addToCart(_ book: Book) async {
+        do {
+            try await addToCartUseCase.execute(book)
+        } catch {
+            state = .error("Failed to add to cart: \(error.localizedDescription)")
+        }
+    }
+
     func refreshFavorites() async {
         favoriteIds = (try? await getFavoriteIdsUseCase.execute()) ?? []
     }

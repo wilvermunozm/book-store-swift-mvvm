@@ -18,7 +18,8 @@ struct FavoritesScreen : View {
                     DetailScreen(
                         book: book,
                         isFavorite: true,
-                        onToggleFavorite: { await viewModel.removeFavorite(book) }
+                        onToggleFavorite: { await viewModel.removeFavorite(book) },
+                        onAddToCart: nil
                     )
                 }
         }.task {

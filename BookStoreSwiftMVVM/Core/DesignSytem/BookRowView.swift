@@ -26,11 +26,15 @@ struct BookRowView : View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
+
+                Text(book.price, format: .currency(code: "USD"))
+                    .font(.subheadline.weight(.medium))
+                    .monospacedDigit()
             }
 
-            if isFavorite {
-                Spacer(minLength: 8)
+            Spacer(minLength: 8)
 
+            if isFavorite {
                 Image(systemName: "heart.fill")
                     .font(.footnote)
                     .foregroundStyle(.red)

@@ -17,7 +17,8 @@ struct HomeScreen : View {
                     DetailScreen(
                         book: book,
                         isFavorite: viewModel.isFavorite(book),
-                        onToggleFavorite: { await viewModel.toggleFavorite(book) }
+                        onToggleFavorite: { await viewModel.toggleFavorite(book) },
+                        onAddToCart: { await viewModel.addToCart(book) }
                     )
                 }
         }.task {
@@ -35,6 +36,14 @@ struct HomeScreen : View {
             List(bookList){ book in
                 NavigationLink(value: book){
                     BookRowView(book: book, isFavorite: viewModel.isFavorite(book))
+                }
+                .swipeActions(edge: .leading) {
+                    Button {
+                        Task { await viewModel.addToCart(book) }
+                    } label: {
+                        Label("Al carrito", systemImage: "cart.badge.plus")
+                    }
+                    .tint(.green)
                 }
                 .swipeActions(edge: .trailing) {
                     Button {

@@ -12,4 +12,5 @@ struct Book : Identifiable, Hashable {
     let title: String
     let authorName : String
     let coverURL: URL?
+    let price: Decimal
 }

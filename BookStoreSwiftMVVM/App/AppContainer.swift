@@ -20,7 +20,8 @@ final class AppContainer {
         
         self.store = StoreContainer(
             repository: BookRepository(restService: restService),
-            favoritesRepository: FavoritesRepository(context: modelContainer.mainContext)
+            favoritesRepository: FavoritesRepository(context: modelContainer.mainContext),
+            cartRepository: InMemoryCartRepository()
         )
     }
 }

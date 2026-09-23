@@ -21,6 +21,10 @@ struct BookStoreSwiftMVVMApp: App {
                 Tab("Favoritos", systemImage: "heart") {
                     FavoritesScreen(viewModel: container.store.makeFavoritesViewModel())
                 }
+
+                Tab("Carrito", systemImage: "cart") {
+                    CartScreen(viewModel: container.store.makeCartViewModel())
+                }
             }
         }
     }

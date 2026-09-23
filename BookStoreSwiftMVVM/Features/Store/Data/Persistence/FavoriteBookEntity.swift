@@ -36,6 +36,12 @@ extension FavoriteBookEntity {
     }
 
     func toBook() -> Book {
-        Book(id: id, title: title, authorName: authorName, coverURL: coverURL)
+        Book(
+            id: id,
+            title: title,
+            authorName: authorName,
+            coverURL: coverURL,
+            price: BookPricing.price(for: id)
+        )
     }
 }

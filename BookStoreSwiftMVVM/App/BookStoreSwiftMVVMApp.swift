@@ -10,12 +10,18 @@ import SwiftUI
 @main
 struct BookStoreSwiftMVVMApp: App {
     private let container = AppContainer()
-    
+
     var body: some Scene {
         WindowGroup {
-            HomeScreen(
-                viewModel: container.store.makeViewModel()
-            )
+            TabView {
+                Tab("Libros", systemImage: "books.vertical") {
+                    HomeScreen(viewModel: container.store.makeHomeViewModel())
+                }
+
+                Tab("Favoritos", systemImage: "heart") {
+                    FavoritesScreen(viewModel: container.store.makeFavoritesViewModel())
+                }
+            }
         }
     }
 }

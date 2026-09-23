@@ -7,16 +7,41 @@
 
 struct StoreContainer {
     private let repository: BookRepositoryType
-    
-    init(repository: BookRepositoryType) {
+    private let favoritesRepository: FavoritesRepositoryType
+
+    init(repository: BookRepositoryType, favoritesRepository: FavoritesRepositoryType) {
         self.repository = repository
+        self.favoritesRepository = favoritesRepository
     }
-    
+
     private var getBooksUseCase : GetBooksUseCase {
         GetBooksUseCase(repository: repository)
     }
-    
-    func makeViewModel() -> HomeViewModel {
-        HomeViewModel(getBooksUseCase: getBooksUseCase)
+
+    private var getFavoritesUseCase : GetFavoritesUseCase {
+        GetFavoritesUseCase(repository: favoritesRepository)
+    }
+
+    private var getFavoriteIdsUseCase : GetFavoriteIdsUseCase {
+        GetFavoriteIdsUseCase(repository: favoritesRepository)
+    }
+
+    private var toggleFavoriteUseCase : ToggleFavoriteUseCase {
+        ToggleFavoriteUseCase(repository: favoritesRepository)
+    }
+
+    func makeHomeViewModel() -> HomeViewModel {
+        HomeViewModel(
+            getBooksUseCase: getBooksUseCase,
+            getFavoriteIdsUseCase: getFavoriteIdsUseCase,
+            toggleFavoriteUseCase: toggleFavoriteUseCase
+        )
+    }
+
+    func makeFavoritesViewModel() -> FavoritesViewModel {
+        FavoritesViewModel(
+            getFavoritesUseCase: getFavoritesUseCase,
+            toggleFavoriteUseCase: toggleFavoriteUseCase
+        )
     }
 }

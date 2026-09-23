@@ -13,10 +13,13 @@ import BookStoreNetworking
 struct HomeViewModelTests {
     
     private func makeVM(_ result: Result<[Book], Error>) -> HomeViewModel {
-        HomeViewModel(
+        let favorites = InMemoryFavoritesRepository()
+        return HomeViewModel(
             getBooksUseCase: GetBooksUseCase(
                 repository: StubBookRepository(result: result)
-            )
+            ),
+            getFavoriteIdsUseCase: GetFavoriteIdsUseCase(repository: favorites),
+            toggleFavoriteUseCase: ToggleFavoriteUseCase(repository: favorites)
         )
     }
     
@@ -45,7 +48,7 @@ struct HomeViewModelTests {
     }
 }
 
-private extension HomeState {
+private extension BookListState {
     var isError: Bool {
         if case .error = self { return true }
         return false

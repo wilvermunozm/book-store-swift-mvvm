@@ -35,15 +35,11 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		D332CA4730621656009024D9 /* BookStoreSwiftMVVM */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = BookStoreSwiftMVVM;
 			sourceTree = "<group>";
 		};
 		D332CA5530621658009024D9 /* BookStoreSwiftMVVMTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = BookStoreSwiftMVVMTests;
 			sourceTree = "<group>";
 		};
@@ -243,9 +239,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BookStoreSwiftMVVM/Pods-BookStoreSwiftMVVM-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BookStoreSwiftMVVM/Pods-BookStoreSwiftMVVM-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

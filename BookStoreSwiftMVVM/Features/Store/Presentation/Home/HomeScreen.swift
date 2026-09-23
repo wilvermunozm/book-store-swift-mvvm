@@ -14,7 +14,11 @@ struct HomeScreen : View {
             content
                 .navigationTitle("Book Store")
                 .navigationDestination(for: Book.self){ book in
-                    DetailScreen(book: book)
+                    DetailScreen(
+                        book: book,
+                        isFavorite: viewModel.isFavorite(book),
+                        onToggleFavorite: { await viewModel.toggleFavorite(book) }
+                    )
                 }
         }.task {
             await viewModel.getBooks()
@@ -30,27 +34,18 @@ struct HomeScreen : View {
         case .loaded(let bookList) :
             List(bookList){ book in
                 NavigationLink(value: book){
-                    row(for: book)
+                    BookRowView(book: book, isFavorite: viewModel.isFavorite(book))
                 }
-            }
-        }
-    }
-
-    @ViewBuilder
-    private func row(for book: Book) -> some View {
-        HStack(spacing: 12) {
-            BookCoverView(url: book.coverURL)
-                .accessibilityHidden(true)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(book.title)
-                    .font(.headline)
-                    .lineLimit(2)
-
-                if !book.authorName.isEmpty {
-                    Text(book.authorName)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                .swipeActions(edge: .trailing) {
+                    Button {
+                        Task { await viewModel.toggleFavorite(book) }
+                    } label: {
+                        Label(
+                            viewModel.isFavorite(book) ? "Quitar" : "Favorito",
+                            systemImage: viewModel.isFavorite(book) ? "heart.slash" : "heart"
+                        )
+                    }
+                    .tint(.red)
                 }
             }
         }
@@ -59,5 +54,5 @@ struct HomeScreen : View {
 
 #Preview {
     let container = AppContainer()
-    HomeScreen(viewModel: container.store.makeViewModel())
+    HomeScreen(viewModel: container.store.makeHomeViewModel())
 }

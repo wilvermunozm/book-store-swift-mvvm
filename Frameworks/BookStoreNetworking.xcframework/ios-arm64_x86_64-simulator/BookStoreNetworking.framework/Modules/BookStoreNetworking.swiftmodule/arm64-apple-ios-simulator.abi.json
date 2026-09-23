@@ -1,0 +1,207 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "BookStoreNetworking",
+    "printedName": "BookStoreNetworking",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "BookStoreNetworking"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ApiError",
+        "printedName": "ApiError",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "badResponse",
+            "printedName": "badResponse",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(BookStoreNetworking.ApiError.Type) -> (Swift.Int) -> BookStoreNetworking.ApiError",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Swift.Int) -> BookStoreNetworking.ApiError",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ApiError",
+                        "printedName": "BookStoreNetworking.ApiError",
+                        "usr": "s:19BookStoreNetworking8ApiErrorO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "BookStoreNetworking.ApiError.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ApiError",
+                        "printedName": "BookStoreNetworking.ApiError",
+                        "usr": "s:19BookStoreNetworking8ApiErrorO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:19BookStoreNetworking8ApiErrorO11badResponseyACSicACmF",
+            "mangledName": "$s19BookStoreNetworking8ApiErrorO11badResponseyACSicACmF",
+            "moduleName": "BookStoreNetworking"
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:19BookStoreNetworking8ApiErrorO",
+        "mangledName": "$s19BookStoreNetworking8ApiErrorO",
+        "moduleName": "BookStoreNetworking",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Error",
+            "printedName": "Error",
+            "usr": "s:s5ErrorP",
+            "mangledName": "$ss5ErrorP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "SendableMetatype",
+            "printedName": "SendableMetatype",
+            "usr": "s:s16SendableMetatypeP",
+            "mangledName": "$ss16SendableMetatypeP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "RestService",
+        "printedName": "RestService",
+        "children": [
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(session:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "RestService",
+                "printedName": "BookStoreNetworking.RestService",
+                "usr": "s:19BookStoreNetworking11RestServiceV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URLSession",
+                "printedName": "Foundation.URLSession",
+                "hasDefaultArg": true,
+                "usr": "c:objc(cs)NSURLSession"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:19BookStoreNetworking11RestServiceV7sessionACSo12NSURLSessionC_tcfc",
+            "mangledName": "$s19BookStoreNetworking11RestServiceV7sessionACSo12NSURLSessionC_tcfc",
+            "moduleName": "BookStoreNetworking",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "get",
+            "printedName": "get(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "GenericTypeParam",
+                "printedName": "τ_0_0"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:19BookStoreNetworking11RestServiceV3getyx10Foundation3URLVYaKSeRzlF",
+            "mangledName": "$s19BookStoreNetworking11RestServiceV3getyx10Foundation3URLVYaKSeRzlF",
+            "moduleName": "BookStoreNetworking",
+            "genericSig": "<τ_0_0 where τ_0_0 : Swift.Decodable>",
+            "sugared_genericSig": "<T where T : Swift.Decodable>",
+            "declAttributes": [
+              "Nonisolated",
+              "AccessControl"
+            ],
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:19BookStoreNetworking11RestServiceV",
+        "mangledName": "$s19BookStoreNetworking11RestServiceV",
+        "moduleName": "BookStoreNetworking",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": []
+}

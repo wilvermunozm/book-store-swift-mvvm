@@ -3,6 +3,7 @@ use_frameworks!
 
 target 'BookStoreSwiftMVVM' do
   pod 'Kingfisher', '~> 8.0'
+  pod 'BookStoreNetworking', :path => 'Frameworks'
 
   target 'BookStoreSwiftMVVMTests' do
     inherit! :search_paths

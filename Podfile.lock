@@ -1,16 +1,23 @@
 PODS:
+  - BookStoreNetworking (1.0.0)
   - Kingfisher (8.12.0)
 
 DEPENDENCIES:
+  - BookStoreNetworking (from `Frameworks`)
   - Kingfisher (~> 8.0)
 
 SPEC REPOS:
   trunk:
     - Kingfisher
 
+EXTERNAL SOURCES:
+  BookStoreNetworking:
+    :path: Frameworks
+
 SPEC CHECKSUMS:
+  BookStoreNetworking: d3ff81294768269f5d8b894bb8c49bdb7a470a08
   Kingfisher: 64e06c7d1a9851ecff9d1b14f92ad01141263dae
 
-PODFILE CHECKSUM: 90e286fb72f3e243eedaca3feabc205da542d38b
+PODFILE CHECKSUM: 8e373f2743c35731c6f776cf5cb4117cdfa2969a
 
 COCOAPODS: 1.16.2

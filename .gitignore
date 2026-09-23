@@ -5,6 +5,11 @@
 ## Build artifacts
 DerivedData/
 build/
+*.xcarchive
+
+## XCFramework
+# El .xcframework SI se versiona: permite compilar tras `pod install`
+# sin regenerarlo. Se reconstruye con ./scripts/build-xcframework.sh
 
 
 ## User settings

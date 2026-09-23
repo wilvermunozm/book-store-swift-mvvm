@@ -6,6 +6,7 @@
 //
 
 import Testing
+import BookStoreNetworking
 @testable import BookStoreSwiftMVVM
 
 @MainActor

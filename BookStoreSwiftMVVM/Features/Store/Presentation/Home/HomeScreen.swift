@@ -21,7 +21,11 @@ struct HomeScreen : View {
                         onAddToCart: { await viewModel.addToCart(book) }
                     )
                 }
-        }.task {
+        }
+        .actionErrorAlert(viewModel.actionError) {
+            viewModel.dismissActionError()
+        }
+        .task {
             await viewModel.getBooks()
         }
     }

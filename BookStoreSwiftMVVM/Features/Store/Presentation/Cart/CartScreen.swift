@@ -23,7 +23,11 @@ struct CartScreen : View {
                         }
                     }
                 }
-        }.task {
+        }
+        .actionErrorAlert(viewModel.actionError) {
+            viewModel.dismissActionError()
+        }
+        .task {
             await viewModel.getCart()
         }
     }

@@ -18,6 +18,7 @@ enum CartState : Equatable {
 @Observable
 final class CartViewModel {
     private(set) var state : CartState = .loading
+    private(set) var actionError : String?
 
     private let getCartUseCase : GetCartUseCase
     private let updateCartItemUseCase : UpdateCartItemUseCase
@@ -72,12 +73,16 @@ final class CartViewModel {
         await mutate { try await clearCartUseCase.execute() }
     }
 
+    func dismissActionError() {
+        actionError = nil
+    }
+
     private func mutate(_ operation: () async throws -> Void) async {
         do {
             try await operation()
             await getCart()
         } catch {
-            state = .error("Failed to update cart: \(error.localizedDescription)")
+            actionError = "No se pudo actualizar el carrito: \(error.localizedDescription)"
         }
     }
 }

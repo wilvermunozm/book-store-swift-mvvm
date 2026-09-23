@@ -12,6 +12,8 @@ import Foundation
 final class FavoritesViewModel {
     private(set) var state : BookListState = .loading
 
+    private(set) var actionError : String?
+
     private let getFavoritesUseCase : GetFavoritesUseCase
     private let toggleFavoriteUseCase : ToggleFavoriteUseCase
 
@@ -42,7 +44,11 @@ final class FavoritesViewModel {
             try await toggleFavoriteUseCase.execute(book)
             await getFavorites()
         } catch {
-            state = .error("Failed to update favorites: \(error.localizedDescription)")
+            actionError = "No se pudo quitar de favoritos: \(error.localizedDescription)"
         }
+    }
+
+    func dismissActionError() {
+        actionError = nil
     }
 }

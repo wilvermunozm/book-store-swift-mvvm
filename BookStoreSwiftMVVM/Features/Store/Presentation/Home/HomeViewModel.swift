@@ -12,6 +12,7 @@ import Foundation
 final class HomeViewModel {
     private(set) var state : BookListState = .loading
     private(set) var favoriteIds : Set<String> = []
+    private(set) var actionError : String?
 
     private let getBooksUseCase : GetBooksUseCase
     private let getFavoriteIdsUseCase : GetFavoriteIdsUseCase
@@ -55,7 +56,7 @@ final class HomeViewModel {
             try await toggleFavoriteUseCase.execute(book)
             await refreshFavorites()
         } catch {
-            state = .error("Failed to update favorites: \(error.localizedDescription)")
+            actionError = "No se pudo actualizar el favorito: \(error.localizedDescription)"
         }
     }
 
@@ -63,8 +64,12 @@ final class HomeViewModel {
         do {
             try await addToCartUseCase.execute(book)
         } catch {
-            state = .error("Failed to add to cart: \(error.localizedDescription)")
+            actionError = "No se pudo agregar al carrito: \(error.localizedDescription)"
         }
+    }
+
+    func dismissActionError() {
+        actionError = nil
     }
 
     func refreshFavorites() async {

@@ -22,7 +22,11 @@ struct FavoritesScreen : View {
                         onAddToCart: nil
                     )
                 }
-        }.task {
+        }
+        .actionErrorAlert(viewModel.actionError) {
+            viewModel.dismissActionError()
+        }
+        .task {
             await viewModel.getFavorites()
         }
     }

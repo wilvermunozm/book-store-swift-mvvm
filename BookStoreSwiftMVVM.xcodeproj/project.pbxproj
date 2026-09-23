@@ -19,13 +19,6 @@
 			remoteGlobalIDString = D332CA4430621656009024D9;
 			remoteInfo = BookStoreSwiftMVVM;
 		};
-		D332CA5D30621658009024D9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D332CA3D30621656009024D9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D332CA4430621656009024D9;
-			remoteInfo = BookStoreSwiftMVVM;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +28,6 @@
 		D093BE04FF99914F10E0F6F7 /* Pods-BookStoreSwiftMVVM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BookStoreSwiftMVVM.debug.xcconfig"; path = "Target Support Files/Pods-BookStoreSwiftMVVM/Pods-BookStoreSwiftMVVM.debug.xcconfig"; sourceTree = "<group>"; };
 		D332CA4530621656009024D9 /* BookStoreSwiftMVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BookStoreSwiftMVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D332CA5230621658009024D9 /* BookStoreSwiftMVVMTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookStoreSwiftMVVMTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D332CA5C30621658009024D9 /* BookStoreSwiftMVVMUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookStoreSwiftMVVMUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6A22218A1D95CCA0D7F5092 /* Pods-BookStoreSwiftMVVMTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BookStoreSwiftMVVMTests.debug.xcconfig"; path = "Target Support Files/Pods-BookStoreSwiftMVVMTests/Pods-BookStoreSwiftMVVMTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E53E846B7EE24468A4D6A879 /* Pods-BookStoreSwiftMVVM.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BookStoreSwiftMVVM.release.xcconfig"; path = "Target Support Files/Pods-BookStoreSwiftMVVM/Pods-BookStoreSwiftMVVM.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -49,11 +41,6 @@
 		D332CA5530621658009024D9 /* BookStoreSwiftMVVMTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = BookStoreSwiftMVVMTests;
-			sourceTree = "<group>";
-		};
-		D332CA5F30621658009024D9 /* BookStoreSwiftMVVMUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = BookStoreSwiftMVVMUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -72,13 +59,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				385E01592556D38BB401FBC7 /* Pods_BookStoreSwiftMVVMTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D332CA5930621658009024D9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,7 +90,6 @@
 			children = (
 				D332CA4730621656009024D9 /* BookStoreSwiftMVVM */,
 				D332CA5530621658009024D9 /* BookStoreSwiftMVVMTests */,
-				D332CA5F30621658009024D9 /* BookStoreSwiftMVVMUITests */,
 				D332CA4630621656009024D9 /* Products */,
 				C643EA58B945B3ECD6AAF152 /* Pods */,
 				48DA703AE18E1DCC02A2F062 /* Frameworks */,
@@ -122,7 +101,6 @@
 			children = (
 				D332CA4530621656009024D9 /* BookStoreSwiftMVVM.app */,
 				D332CA5230621658009024D9 /* BookStoreSwiftMVVMTests.xctest */,
-				D332CA5C30621658009024D9 /* BookStoreSwiftMVVMUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -174,27 +152,6 @@
 			productReference = D332CA5230621658009024D9 /* BookStoreSwiftMVVMTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		D332CA5B30621658009024D9 /* BookStoreSwiftMVVMUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D332CA6A30621658009024D9 /* Build configuration list for PBXNativeTarget "BookStoreSwiftMVVMUITests" */;
-			buildPhases = (
-				D332CA5830621658009024D9 /* Sources */,
-				D332CA5930621658009024D9 /* Frameworks */,
-				D332CA5A30621658009024D9 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D332CA5E30621658009024D9 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				D332CA5F30621658009024D9 /* BookStoreSwiftMVVMUITests */,
-			);
-			name = BookStoreSwiftMVVMUITests;
-			productName = BookStoreSwiftMVVMUITests;
-			productReference = D332CA5C30621658009024D9 /* BookStoreSwiftMVVMUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -209,10 +166,6 @@
 						CreatedOnToolsVersion = 27.0;
 					};
 					D332CA5130621658009024D9 = {
-						CreatedOnToolsVersion = 27.0;
-						TestTargetID = D332CA4430621656009024D9;
-					};
-					D332CA5B30621658009024D9 = {
 						CreatedOnToolsVersion = 27.0;
 						TestTargetID = D332CA4430621656009024D9;
 					};
@@ -234,7 +187,6 @@
 			targets = (
 				D332CA4430621656009024D9 /* BookStoreSwiftMVVM */,
 				D332CA5130621658009024D9 /* BookStoreSwiftMVVMTests */,
-				D332CA5B30621658009024D9 /* BookStoreSwiftMVVMUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -248,13 +200,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D332CA5030621658009024D9 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D332CA5A30621658009024D9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -346,13 +291,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D332CA5830621658009024D9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -360,11 +298,6 @@
 			isa = PBXTargetDependency;
 			target = D332CA4430621656009024D9 /* BookStoreSwiftMVVM */;
 			targetProxy = D332CA5330621658009024D9 /* PBXContainerItemProxy */;
-		};
-		D332CA5E30621658009024D9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D332CA4430621656009024D9 /* BookStoreSwiftMVVM */;
-			targetProxy = D332CA5D30621658009024D9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -637,56 +570,6 @@
 			};
 			name = Release;
 		};
-		D332CA6B30621658009024D9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = U2S2C77BUR;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
-				MACOSX_DEPLOYMENT_TARGET = 27.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wil.bookstore.BookStoreSwiftMVVMUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = BookStoreSwiftMVVM;
-				XROS_DEPLOYMENT_TARGET = 27.0;
-			};
-			name = Debug;
-		};
-		D332CA6C30621658009024D9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = U2S2C77BUR;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
-				MACOSX_DEPLOYMENT_TARGET = 27.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wil.bookstore.BookStoreSwiftMVVMUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = BookStoreSwiftMVVM;
-				XROS_DEPLOYMENT_TARGET = 27.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -713,15 +596,6 @@
 			buildConfigurations = (
 				D332CA6830621658009024D9 /* Debug */,
 				D332CA6930621658009024D9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D332CA6A30621658009024D9 /* Build configuration list for PBXNativeTarget "BookStoreSwiftMVVMUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D332CA6B30621658009024D9 /* Debug */,
-				D332CA6C30621658009024D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -25,7 +25,7 @@ struct HomeViewModelTests {
     }
     
     @Test func showsBooksWhenRepositoryReturnsData() async {
-        let books = [Book(id: 1, authorName: "Borges")]
+        let books = [Book(id: "/works/OL1W", title: "Ficciones", authorName: "Borges", coverURL: nil)]
         let sut = makeVM(.success(books))
         await sut.getBooks()
         #expect(sut.state == .loaded(books))

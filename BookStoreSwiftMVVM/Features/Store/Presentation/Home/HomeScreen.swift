@@ -8,15 +8,19 @@ import SwiftUI
 
 struct HomeScreen : View {
     @State var viewModel : HomeViewModel
-    
+
     var body: some View {
-        VStack {
+        NavigationStack {
             content
+                .navigationTitle("Book Store")
+                .navigationDestination(for: Book.self){ book in
+                    DetailScreen(book: book)
+                }
         }.task {
             await viewModel.getBooks()
         }
     }
-    
+
     @ViewBuilder
     private var content : some View {
         switch viewModel.state {
@@ -24,15 +28,30 @@ struct HomeScreen : View {
         case .error(let errorMessage): ErrorView(errorMenssage: errorMessage)
         case .empty: EmptyStateView()
         case .loaded(let bookList) :
-            NavigationStack {
-                List(bookList){ book in
-                    NavigationLink(value: book){
-                        Text(book.authorName)
-                    }
-                }.navigationDestination(for: Book.self){ book in
-                    DetailScreen(book: book)
+            List(bookList){ book in
+                NavigationLink(value: book){
+                    row(for: book)
                 }
-                .navigationTitle("Book Store")
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func row(for book: Book) -> some View {
+        HStack(spacing: 12) {
+            BookCoverView(url: book.coverURL)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(book.title)
+                    .font(.headline)
+                    .lineLimit(2)
+
+                if !book.authorName.isEmpty {
+                    Text(book.authorName)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
             }
         }
     }

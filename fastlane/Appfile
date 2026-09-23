@@ -1,0 +1,5 @@
+app_identifier("com.wil.bookstore.BookStoreSwiftMVVM")
+
+# Sin credenciales: este proyecto solo automatiza build y tests.
+# Las lanes de distribucion necesitarian apple_id y team_id, que deben
+# venir de variables de entorno o de `match`, nunca versionados.

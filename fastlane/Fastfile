@@ -1,0 +1,64 @@
+default_platform(:ios)
+
+WORKSPACE = "BookStoreSwiftMVVM.xcworkspace"
+SCHEME    = "BookStoreSwiftMVVM"
+DEVICE    = "iPhone 17"
+
+FRAMEWORK_PROJECT = "Frameworks/BookStoreNetworking/BookStoreNetworking.xcodeproj"
+FRAMEWORK_SCHEME  = "BookStoreNetworking"
+
+platform :ios do
+
+  desc "Ejecuta la suite de tests de la app"
+  lane :tests do
+    run_tests(
+      workspace: WORKSPACE,
+      scheme: SCHEME,
+      devices: [DEVICE],
+      clean: false,
+      output_directory: "fastlane/test_output",
+      # xcpretty no sabe leer Swift Testing, asi que su JUnit sale vacio.
+      # El .xcresult si contiene los resultados completos y no necesita
+      # herramientas adicionales instaladas.
+      result_bundle: true,
+      output_types: ""
+    )
+  end
+
+  desc "Ejecuta la suite de tests del XCFramework de networking"
+  lane :framework_tests do
+    run_tests(
+      project: FRAMEWORK_PROJECT,
+      scheme: FRAMEWORK_SCHEME,
+      devices: [DEVICE],
+      clean: false,
+      output_directory: "fastlane/test_output/framework",
+      result_bundle: true,
+      output_types: ""
+    )
+  end
+
+  desc "Regenera BookStoreNetworking.xcframework"
+  lane :build_framework do
+    sh("../scripts/build-xcframework.sh")
+  end
+
+  desc "Compila la app sin firmar, para validar que el proyecto integra bien"
+  lane :build do
+    build_app(
+      workspace: WORKSPACE,
+      scheme: SCHEME,
+      configuration: "Debug",
+      skip_package_ipa: true,
+      skip_archive: true,
+      destination: "generic/platform=iOS Simulator"
+    )
+  end
+
+  desc "Todo lo que deberia pasar antes de integrar: pods, framework y ambas suites"
+  lane :ci do
+    cocoapods(repo_update: false)
+    framework_tests
+    tests
+  end
+end

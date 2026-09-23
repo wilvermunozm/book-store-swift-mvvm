@@ -32,7 +32,7 @@ final class HomeViewModel {
     }
 }
 
-enum HomeState {
+enum HomeState : Equatable {
     case loading
     case error(String)
     case loaded([Book])
